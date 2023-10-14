@@ -1,0 +1,69 @@
+Laptop - 8GB RAM, 500GB (hard disk)
+
+VMWare / Virtual box -> CentOS(Unix) - Hadoop
+
+Windows?
+
+Hadoop
+------
+
+1.It is open source and developer in Java.
+2.We can store and process huge volumne of data.
+
+
+Why we use hadoop?
+------------------
+1. Is support massive parallel processing
+     Example:FB post -> like, comment, share
+	 
+2. Horizontal Scalability
+       vice versa of vertical scalability
+
+3. Vertical Scalability - Lenevo
+       we can extend only given limit that is called vertical scaling
+	 
+4. Fault Tolerance
+       we can easily recover lost data that is called fault tolerance.
+	   
+5. Data avaliability
+       1.Here is there is no deadlock system 
+	   2.Data is always avaliable
+	   3.It is supporting for distributed computing ->It will distribute data
+ 	   for each job at a time. 
+	   4.Low latency - it will process the data faster
+   *** 5.Replication Factor(all application following the replication factor)
+	       for example
+		       FB post -> By default 3 times replicate
+			   512 times replicate in server-> maximum 
+			   
+	    Server | node(server) | cluster(group of server/nodes)
+			1- replication - 1 node   
+			if one node loss we can retrive the data in another node
+	   
+	     for give one tralier release in youtube 
+		     24 millions viewers watching that trailer in that case i t have may 24
+			 million times may be replicated
+			 
+     *** 6.wont support for OLTP - cannot update ***********
+		 write once read/execute multiple times but don't try to change the data
+		 7.Sharding
+		   Memory - Block -64MB/128MB/512MB
+		   for example 
+		   Suppose in block have 64MB memory- here we are using only 30MB to file textsql.txt
+           rest 34MB we can another file. That means not waste memoery
+      *** but in RDBMS it is not possible		   
+		   
+          8.Data Locality 
+		     For example we have to process 1GB data, we have to take those data and related server then process
+			 we usually do like this, But in case of Data locality, no need to move the data we just have those process the data with same
+			 using computational layer
+			 
+		  9.Setup
+		  
+		     Single Mode(Sigle Server) - Namenode(book index),Datanode(actual content)
+			 Pseudo Mode(Separate Server) - Namenode, Datanode
+			 Multi Mode(Each node have separate server) - Namenode, Datanode
+  		   
+		 HDFS
+		 Mapreduce
+		 YARN  

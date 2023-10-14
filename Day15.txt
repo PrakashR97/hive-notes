@@ -1,0 +1,22 @@
+beeline
+-------
+
+
+   ->Client
+   ->it allows multiple concurrent client connections and it supports authentication
+   ->apache sentry (hive2)
+   
+        chmod, chgrp, chown
+		
+		-u ->db url
+		-n ->username
+		-w or --password
+		
+		beeline
+		select * from test_serde;
+		no currect connection
+		
+beeline
+!connect jdbc:hive2://localhost:10000 hive cloudera
+beeline -u jdbc:hive2://localhost:10000/default -n hive -p cloudera
+SASL (simple authentication and security layer)

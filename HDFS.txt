@@ -1,0 +1,79 @@
+HDFS Hadoop Distributed File System
+-----------------------------------
+
+
+     		 Hadoop 
+                |
+                |
+		  ------ -----
+		  |           |
+         HDFS         MR
+          GFS		 GMR
+		  
+		  
+
+FAQ
+---
+1. What is file system? no structure(raw)
+Used to read and write from and to HD EX NTFS, EXT, HDFS, S3..
+
+file -> ntfs -> hardisk (raw data) poor performance 
+file -> db -> ntfs -> hardisk (structure) better performance
+
+
+
+
+2. What is block? 
+Big file in to small chunk Ex NTFS 16K, EXT 512 K..
+1 block size 16 kb
+1GB file -> ntfs -> (it will split 1gb file)(b b b b b b b b b b) HDD -> better performance 
+
+
+
+3. Client and server?
+1.Client and Request
+2. Server Response
+
+
+4. Types of file system?
+1.Standlone file system (if i store 1gb movie in one machine) this movie have only one machine that will not distribute
+lap1 ----- lap2 ----- lap3 ==> standlone
+
+2.Distributed file system  (it will distribute the files)
+lap1 ----- lap2 ----- lap3 ==> distributed
+
+
+5.Types of Distributed system?
+1.Master and slave - Hadoop
+2.Peer to Peer - Cassandra
+
+
+6.What is process? Program in execution
+
+7.What is daemon process ? Background process example(task manager which we can see process )
+
+8.Cluster and node?
+Node - Individual physical or virtual manchine
+Cluster - group of node
+
+9.What is client API?
+Application program interface
+
+
+Hadoop Version-1(window,mac,linux)
+----------------
+
+Hadoop Distributed file system
+==============================
+
+
+
+              0
+			  
+	
+	1          3             4
+
+
+         
+
+

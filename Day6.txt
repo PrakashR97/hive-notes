@@ -1,0 +1,18 @@
+Hive Architecture
+-----------------
+
+      1. It is a datawarehouse application
+      2. It is developer by facebook
+	  3. It stores schema in database(Derby/Mysql/Oracle) and process data in HDFS
+	  4. we can process structured, unstructure, semistructured.
+	  5. SQL (hql hive-ql), python (pyhive), impala
+	  6. It will store data in HDFS and process it through MR(YARN)
+	  7. It won't support OLTP
+	  
+	  
+	  
+batch process-> processing old data
+stream processing -> processing real data 
+
+mapreduce only support-> batch processing only
+spark support-> for both stream and batch processing as well

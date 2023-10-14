@@ -1,0 +1,75 @@
+Complex Data Types
+------------------
+------------------
+
+1.Array
+-------
+
+
+Create table temp(date_info string, city string, temp_info array<double>)
+ row format delimited fields terminated by '\t'
+collection items terminated by ',';
+
+
+
+1/2/17 TaminNadu 23.2,22.3,20.5,25.5
+1/2/17 Kerala 27.5,24.3,21.8,20.6
+
+load data local inpath '/home/cloudera/array_data.txt' into table temp;
+array_data.txt
+ 
+select temp_info[1] from temp_info;
+
+24.3
+
+
+insert into temp_info 
+select '1/2/17','Harayana',Array(23.4,56.7) from dummy;
+
+MAP
+---
+---
+
+1,abc,40000,a$b$c,pf#500$epf#200,hyd
+2,def,30000,d$f,pf#500,bang
+
+
+create table emp(int id, name stirng, salary int, subname array<string>, pf_epf map<stirng,int>,city string)
+row format delimited fields terminated by ','
+collection items terminated by '$'
+map keys terminated by '#';
+
+accessing map value
+
+select pf_epf["pf"] from emp;
+
+STRUCT
+------
+------
+
+1,abc,40000,a$b$c,pf#500$epf#300,hyd$ap$40000
+2,def,30000,d$f,pf#500,chennai$tn$50000
+
+create table emp(int id, name stirng, salary bigint, subname array<string>, 
+pf_epf map<stirng,int>,city string, add struct <city:string,state:string,population:bihint>)
+row format delimited fields terminated by ','
+collection items terminated by '$'
+map keys terminated by '#';
+
+
+select addr.city from emp_struct;
+
+
+Union Types
+-----------
+-----------
+
+CREATE TABLE employee ( 
+    id INT, 
+    name STRING, 
+    salary DOUBLE, 
+    additional_info UNIONTYPE<STRING, INT, DOUBLE>); 
+	
+INSERT INTO employee VALUES (1, 'John Doe', 50000, CREATE_UNION(0, 'Senior Developer')); '
+
+SELECT id, name, salary, get_string(additional_info) FROM employee; 

@@ -1,0 +1,214 @@
+External Tables
+===============
+
+1.Internal Table (Manager Table)
+2.External Table 
+8  
+Loading Methods
+===============
+
+1,name1,Para,m,500
+2,name2,metacin,m,800
+3,name3,crocin,f,600
+4,name4,para,f,999
+5,name5,metacin,f,500
+
+drop table patient;
+
+create external table patient(pid int, pname string, drug string, gender string, tot_amt int);
+
+/user/hive/warehouse/patient
+
+load data local inpath '/home/cloudera/patient.dat' into table patient;
+
+select * from patient; --> data has been loaded but it show as null this is not good pratice we need to use below approcah
+
+create external table patient(pid int, pname string, drug string, gender string, tot_amt int)
+row format delimited fields terminated by ',';
+
+create external table patient(pid int, pname string, drug string, gender string, tot_amt int)
+lines terminated by'\n';
+comment 'this contains patients info'
+stored as textfile
+location '/data/hive/';
+
+
+load data from hdfs
+===================
+
+
+hadoop fs -mkdir /data1
+hadoop fs -put /home/cloudera/Desktop/patient.dat /data1/
+
+drop table patient;
+
+create external table patient(pid int, pname string, drug string, gender string, tot_amt int)
+row format delimited fields terminated by ',';
+
+load data inpath '/data1/patient.dat' into table patient;
+
+load data inpath '/data1/patient.dat' overwrite into table patient;
+
+
+insert like sql
+===============
+
+insert into patient values(1,'fff','para','f',100)
+
+-put or -copyFromLocal another way to load data location wise load data 
+=========================================================================
+
+drop table patient;
+
+create external table patient(pid int, pname string, drug string, gender string, tot_amt int)
+row format delimited fields terminated by ',';
+
+/user/hive/warehouse/patient
+
+hadoop fs -put /home/cloudera/Desktop/patient.dat /user/hive/warehouse/patient
+
+hadoop fs -cp /data1/patient.dat /user/hive/warehouse/patient
+
+hadoop fs -mv /data1/patient.dat /user/hive/warehouse/patient
+
+using queries
+=============
+
+drop table patient;
+
+create external table patient(pid int, pname string, drug string, gender string, tot_amt int);
+
+/user/hive/warehouse/patient
+
+load data local inpath '/home/cloudera/patient.dat' into table patient;
+
+select * from patient;
+
+
+create external table patient1(pid int, pname string, drug string, gender string, tot_amt int);
+
+
+insert into patient1
+select * from patient;
+
+
+insert overwrite into patient1
+select * from patient;
+
+while creation insert data
+==========================
+drop table patient2;
+
+create external table patient2 as 
+select * from patient;
+
+drop table patient3;
+
+create external table patient3 as 
+select * from patient 
+where 1=2;
+
+create external table patient4 like default.patient;
+
+
+External Table
+==============
+
+drop table patient
+
+create external table patient(pid int, pname string, drug string, gender string, tot_amt int)
+row format delimited fields terminated by ','
+stored as textfile
+location 'data1/';
+
+show create table patient;
+
+
+Internal table vs External table
+================================
+
+1.Internal Tables
+-----------------
+
+1. by default internal table will get store over in /user/hive/warehouse/ but we can give location to store data external but we don't prefer
+2.Syntax variation create table tb_name
+3.if we drop internal table, table(default schema) and data (HDFS) will get dropped from hive 
+4.getting stored over into internal location 
+5.we can alter the existing partition
+6.we can truncate
+7.table and data get dropped permanently
+
+
+2.External Table
+----------------
+
+1. by default internal table will get store over in /user/hive/warehouse/ but we can give location to store data external
+2. create external table tb_name 
+3.if we drop internal table, table(default schema) and data (HDFS) will get dropped from hive 
+
+create external table patient(pid int, pname string, drug string, gender string, tot_amt int)
+comment 'this contains patients info'
+row format delimited fields terminated by ','
+lines terminated by'\n';
+stored as textfile
+location '/user/spark/prg1/';
+
+add city column in patient table 
+desc patient;
+msck repair table patient;--> sometimes column may not reflect to fix use this command
+
+*************4.we can directly map hadoop external tools output into this table. eg pig, sqoop, hbase, spark***************88
+5.we can't partition
+6.we can't truncate 
+7.table get dropped permanently and data will remain the same 
+
+spark => /user/spark/prg1/
+
+
+3. Temporary Table --similar to oracle
+------------------
+
+create temporary table patient_tmp(pid int,pname string,drug string,gender string,tot_amt int)
+
+
+4. Transactional Table 
+----------------------
+
+dml -insert, update, delete
+
+5. TblProperties how can create ACID table use below syntax
+----------------
+
+create temporary table patient_tmp(pid int,pname string,drug string,gender string,tot_amt int)
+row format delimited fields terminated by ','
+tblproperties('Transactional'=TRUE);
+
+
+create temporary table patie					nt_tmp(pid int,pname string,drug string,gender string,tot_amt int)
+row format delimited fields terminated by ','
+tblproperties("skip.header.line.count"="1","skip.footer.line.count"="1");
+
+
+create temporary table patient_tmp(pid int,pname string,drug string,gender string,tot_amt int)
+row format delimited fields terminated by ','
+tblproperties('Transactional'=TRUE);
+
+
+till now we are using default schema
+
+we can create our own schema
+
+create database db1;
+
+
+if exists & if not exists
+=========================
+
+drop table if exists db1.patient_tmp;
+
+
+export hive table data to location file
+========================================
+
+insert overwrite local directory 'home/cloudera/Desktop/patient/' row format delimited fields terminated 
+by ','	select * from patient;

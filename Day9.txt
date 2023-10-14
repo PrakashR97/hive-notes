@@ -1,0 +1,65 @@
+Hive - Partition and Bucketing
+==============================
+
+Patition
+========
+
+ select * from emp;
+ select * from emp where empid = 100;
+ 
+ 1. For avoiding full table scan we can go for partition.
+ 2. employees -> deptid
+ 
+ empid, ename, salary, managerid, deptid
+  
+  1. partition column should have few unique values 
+  2. it helps to organize the data in logic fashion.
+  3. it allows hive to skip unnecessary data and it will read only repective directories and files.
+  4. very often users need to filter the data on specific column, we can go for this.
+  5. query performance will be good if we used partition column in where clause.
+  6. hive will create separate folder for each value of partitioned column and partitioned column will not be stored in hive files
+  7. partitioned by -> we have to use while creation of table.
+ 
+ 
+Types
+-----
+
+ 1.Default partition
+ 2.Custom partition
+   1.Static partition
+       Existing column
+	   New column for static partition 
+    
+   2.Dynamic partition
+   
+   
+1.Static partition - New Column
+------------------
+  drop table patient1;
+  create table patient1(pid int,pname string,drug string,gender string,tot_amt int)
+  partitioned by(d string);
+  
+  insert into table patient1 partition (d='para') select * from patient where drug='para';
+  set hive.cli.print.header=true;
+  
+2.Static partition - Existing Column
+------------------
+  drop table patient3;
+  create table patient3(pid int,pname string,gender string,tot_amt int)
+  partitioned by(drug string);
+  
+  insert into table patient3 partition(drug) select pid,pname,gender,tot_amt,drug from patient;
+  
+  it will automatically partitioning the value based on partition key column value
+  
+  
+Multiple column usage level
+===========================
+
+  drop table patient4;
+  create table patient4(pid int,pname string,gender string,tot_amt int)
+  partitioned by(city string,drug string);
+  
+  
+  insert into table patient3 partition(drug) select pid,pname,gender,tot_amt,city,drug from patient;
+  

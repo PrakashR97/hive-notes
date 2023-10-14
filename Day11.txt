@@ -1,0 +1,92 @@
+Default Partition(Bucketing)  (another technique of decomposing or partitioning a data)
+=============================
+
+1. Partition file size doesn't match with actual exception
+2. Bucketing will be allow user to divide table data into equal parts/memory in file wise 
+3. If we create too many Tiny partitions then in hadoop it will create lot of folders and files it will lead to degrade performance in name node/hdfs cluster
+
+partition ===>/user/hive/warehouse/patient3/city=chennai/drug=Para/0000_0
+bucketing ===>/user/hive/warehouse/patient3/0000_0
+patient/country/district/chennai/velacherry/
+
+1.Bucketing Function - work based on hash function
+2.CLUSTERED BY
+3.Data files are equal in size
+4.map-side joins will be faster on bucketed tables.
+
+drop table patient4;
+
+set hive.enforce.bucketing=true;
+	
+create table patient4(pid int,pname string,drug string, gender string, tot_amt int)
+clustered by (drug) into 4 buckets;
+
+ 1 bucket = 1 partition = 1 block = 128MB
+ total data size/block size=bucket count 
+ 
+insert into patient3
+select * from patient2;
+
+
+1.it is faster in partiion the data based on hashvalue
+2.it will eliminate the unecessary folders and files
+3.it will impore performance
+4.even multiple columns partiion as possible
+
++++++++++++
++Reference+
++++++++++++
+
+https://stackoverflow.com/questions/38105043/how-does-data-distribution-happens-in-bucketing-in-hive
+
+
+CREATE TABLE Employee(
+ID BIGINT,
+NAME STRING, 
+AGE INT,
+SALARY BIGINT,
+DEPARTMENT STRING 
+)
+COMMENT 'This is Employee table stored as textfile clustered by id into 5 buckets'
+CLUSTERED BY(ID) INTO 5 BUCKETS
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE;
+
+
+
+0: jdbc:hive2://localhost:10000> select * from employee_old;
++------------------+--------------------+-------------------+----------------------+--------------------------+--+
+| employee_old.id  | employee_old.name  | employee_old.age  | employee_old.salary  | employee_old.department  |
++------------------+--------------------+-------------------+----------------------+--------------------------+--+
+| 1                | Sudip              | 34                | 62000                | HR                       |
+| 2                | Suresh             | 45                | 76000                | FINANCE                  |
+| 3                | Aarti              | 25                | 37000                | BIGDATA                  |
+| 4                | Neha               | 27                | 39000                | FINANCE                  |
+| 5                | Rajesh             | 29                | 59000                | BIGDATA                  |
+| 6                | Suman              | 37                | 63000                | HR                       |
+| 7                | Paresh             | 42                | 71000                | BIGDATA                  |
+| 8                | Rami               | 33                | 56000                | HR                       |
+| 9                | Arpit              | 41                | 46000                | HR                       |
+| 10               | Sanjeev            | 51                | 99000                | FINANCE                  |
+| 11               | Sanjay             | 32                | 67000                | FINANCE                  |
++------------------+--------------------+-------------------+----------------------+--------------------------+--+
+
+
+
+0: jdbc:hive2://localhost:10000> INSERT OVERWRITE TABLE Employee SELECT * from Employee_old;
+
+
+Name        Type
+000000_0    file
+000001_0    file
+000002_0    file
+000003_0    file
+000004_0    file
+
+
+All records with Hash(ID) mod 5 == 0 goes into this file.
+
+All records with Hash(ID) mod 5 == 1 goes into this file.
+
+All records with Hash(ID) mod 5 == 2 goes into this file.

@@ -1,0 +1,4 @@
+Static Partition vs Dynamic Partition vs Bucketing Technique
+============================================================
+
+

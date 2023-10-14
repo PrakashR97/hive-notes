@@ -1,0 +1,45 @@
+Partition with Bucketing
+========================
+setting properties
+------------------
+
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode=non-strict;
+set hive.enforce.bucketing=true;
+
+
+create table student(
+student_name string,
+roll_number int,
+class int 
+)
+row format delimited fields terminated by ',';
+
+
+create table stu_db(
+student_name string,
+roll_number int)
+partitioned by (class int)
+clustered by (roll_number) into 15 buckets
+row format delimited fields terminated by ','
+stored as testfile;
+
+
+name1,1,1
+name2,2,2
+name3,3,3
+name4,4,4
+name5,5,5
+name6,6,3
+
+from student_old
+insert into table stu_db partition(class)
+select student_name, roll_number, class;
+
+select * from stu_db where class=2; --10 dr
+select * from stu_db where roll_number=20; --150 files 
+select * from stu_db where class=2 and roll_number=2-; -- 1 file
+
+hash(20) mod 15 == 5
+
+

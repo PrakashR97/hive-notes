@@ -1,0 +1,109 @@
+Map Reduce(MR)
+--------------
+
+
+RDBMS -> Store and process
+Hadoop-> stores(HDFS) and process(MR)(integrate)
+
+
+1. It is processing layer
+2. DPF(Data Processing Framerwork)
+3  Task
+      Mapper -> convert the data(Key-Value pair)
+	  Combiner
+	  Partitioner
+	  Reducer -> part file(final output)
+	  
+	  1 partition => 1 block (128MB)
+	  
+4. Services/Daemons
+    Job Tracker (JT)
+	Task Tracker(TT)
+	
+  Job Tracker worst case scenario(If job tracker down, whole map reduce layer will be going down)
+  -----------
+     1.It is master service 	
+	 2.It will hold metadata information about job
+	 3.SPOF
+	 
+  Task Tracker(TT) worst case scenario(in task tracker not the case,in this case if task tracker fails, then it will put another data node because here there is replaction faction comes in mind)
+  ----------------
+      1. It is slave service
+	  2. It will send heartbeat to JT by every 3 secs
+	  
+  hive - sql -> HDFS & MR
+  spart
+  hbase
+  sqoop
+  
+  why MR failed?
+  
+  After 2013 digital use high, since it is high map reduce layer down 
+  
+  1. JT frequently down
+       for ex: in twitter 1sec millions request submit
+	   like ex: like,post,comment,tweet these are all things consider as request
+	   so, thats why can't able bear things in Job Tracker
+  2. JT to NN network traffice because of multiple going back
+  4. TT also failed 
+  5. network traffice in TT
+  6. Job timeout in TT 
+  so overcome this issue they introduced YARN
+
+
+
+YARN (Yet Another Resource Negotiater)
+----  
+
+1. It is processing layer
+2. DPF(Data Processing Framerwork)
+3  Task
+      Mapper -> convert the data(Key-Value pair)
+	  Combiner -> mini reducer -> it will do aggregaation(min,max,avg,sum) for each input split separately
+	  Partitioner
+	  Reducer -> part file(final output) -> it will do aggregaation(min,max,avg,sum)
+	  
+	  1 partition => 1 block (128MB)
+	  
+4. Services/Daemons
+    Resource Manager(RM)
+	Node Manager(NM)
+	
+	  Resourse Manager
+	  ----------------
+     1.It is master service 	
+	 2.It will hold metadata information about job
+     
+	 Scheduler
+     ---------
+
+    1.Scheduling
+	2.Responsible for allocating resourece to running jobs
+	3.It doesn;t monitoer or tracking or failed job
+	
+	Application Manager
+	-------------------
+	
+	1. It is responsibe for starting application master.
+	2. Monitoring application master and restart them if application master fails
+	
+	
+     Node Manager
+	  ----------------
+      1. It is slave service
+	  2. It will send heartbeat to RM by every 3 secs
+	  
+	  
+	Application Master is responsible for execution of job,
+	monitor,if job fails intimate to resourece manager
+	applicarion master closly work with resouce manager
+    ------------------
+	1.One job -> one application master
+	
+	container ->resouces(memory,input,network,output,cpu,ram,rom)
+	---------
+	***(memory technically called container)
+	
+	
+	
+YarnChild is responsible for executing YARN taskQs

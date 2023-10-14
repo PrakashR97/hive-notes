@@ -1,0 +1,92 @@
+https://karapagarajdurairaj.blogspot.com
+
+
+HDFS
+----
+
+   1.Hadoop Distributed File System
+   2.DFS - Data storage Framework
+   
+Why?
+   
+    1. It is mainly designed for data analysis
+	2. It is duaralbe.
+	3. We can't edit/modify the data but we can append the data
+	4. We can store input and output for particular job.
+	5. It won't support for ACIT
+	
+	A - Atomicity - If it fail it will return back to orginal transaction
+	C - Consisteny - It will distribute the data consistent 
+	I - Isolation - Isolation is the separation of resource or data modifications made by different transactions.
+	D - Durability - Data's always avaliable
+	
+	
+HDFS Services/Daemons
+---------------------
+	
+	       -Name Node (NN)
+		   -Data Node (DN)
+		   -Secondary Name Node (SNN)
+		   -Stand by Name Node (Standby)
+		   
+Name Node
+---------
+	      
+		     1. It is master node.
+			 2. It will store only meta data. (data about data)
+			 3. If NN fails, then whole cluster will be down. -> SPOF(Single point of failure)
+			 4. Only one NN avaliable per cluster
+			 5. We can call it as main/active NN.
+			 6. It will support for Name node high avaliablity(it means if main node fails it will servers backup node)
+
+             FsImage ->Permanent Storage -> Persistence
+			 Edits   ->Temp storage (WAL)-> Non Persistence(before commit)
+Data Node
+---------
+ 
+             1. It is a slave node(here we are storing actual data)
+			 2. It will store only actual data
+			 3. Totally we can have 4000 machines as DN in hadoop V1. But in Hadoop V2 we can have 35k DN.
+			 4. Each DN will send heartbeat(basic information like memory,CPU usage) to NN for every 3 seconds
+			 5. If DN is not sending hearbeat to NN for 10 mins, then NN will assume like DN is dead.
+			 6. DN - 10TB
+			    Block - 128MB
+				10TB/128MB 100
+			 7. Blocks will separately send block to NN for every 3 secs
+			 
+Secondary Name Node (SNN) same as Name (checkpoint)
+Node structure Same format
+perodically sync from main node****** 
+---------------------------------------
+IF main name node fails it will take backup data from Secondary Name node
+
+              1. It is not backup of NN
+			  2. Introduced in Hadoop V2
+			  3. Checkpoint node of NN.(it will take previous data as backup)
+			                            it will take data backup from active NN between 1 hour interval
+			                            it won't take unwanted data
+			  4. If main NN fails?
+			      new name node comes in picture - > worst case scenario
+				  it will get installed or establised immediately it take data backup from SNN
+				  (checkpoint) 
+			      FsImage ->Permanent Storage -> Persistence
+			      Edits   ->Temp storage (WAL)-> Non Persistence(before commit)
+			 
+		set configurations
+        ------------------
+        ------------------		
+       
+	   dfs.namenode.checkpoint.period =1 hour
+	   dfs.namenode.checkpoint.txns   =1 million
+	   
+	   
+Standby Name Node(Standby)
+--------------------------
+
+          1.Introduced in Hadoop V2
+		  2.It is backup node if mani NN fails
+		   FsImage ->Permanent Storage -> Persistence
+		   Edits   ->Temp storage (WAL)-> Non Persistence(before commit)
+			 
+		  
+		  

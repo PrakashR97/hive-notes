@@ -1,0 +1,97 @@
+Alter Statement
+===============
+
+
+Add
+rename
+change
+replace
+
+
+drop table emp;
+
+create table emp(eid int, ename string)
+row format delimited fields terminated by ',';
+
+alter table emp rename to empnew;
+
+/user/hive/warehouse/empnew
+
+ADD
+---
+---
+
+alter table emp add columns (dept string comment 'dept name');
+
+desc new_emp;
+
+
+CHANGE
+------
+------
+***change data type***
+
+alter table new_emp change city city varchar(30);
+
+*** change column name***
+
+alter table new_emp change city city_info varchar(30);
+
+
+
+REPLACE
+-------
+-------
+
+alter table new_emp replace columns(eid int, ename string);
+
+desc new_emp;
+
+eid, ename 
+
+
+
+MAKE INTERNAL TABLE AS EXTERNAL TABLE
+-------------------------------------
+
+alter table new_emp set tblproperties('external'='true');
+
+vice versa 
+
+alter table new_emp set tblproperties('external'='false');
+
+Security
+--------
+
+drop table emp;
+
+-- 1 million records 
+
+alter table emp enable no_drop;
+alter table emp disable no_drop;
+
+--to unknown use to access restrict
+
+alter table emp enable offline;
+
+select * from emp;
+
+
+TO CHANGE LOCATION OF THE TABLE
+-------------------------------
+-------------------------------
+
+
+alter table emp set location '/data3'
+
+
+table -5
+data file -4
+
+table -5
+data file -10
+
+
+***data discripency***
+emp=> city int  = >chennai load as =>null
+emp=> city string => 100 load as =>100

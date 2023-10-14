@@ -1,0 +1,97 @@
+
+cp  --source and destination should be HDFS
+--
+
+hadoop fs -cp
+
+hadoop fs -cp /data/book.txt /hdfs_dir/
+
+hadoop fs -cp -f /data/book.txt /hdfs_dir/book.txt - it will overide the data/book
+
+mv moving file one folder to another folder
+--
+
+hadoop fs -mv /data/book.txt /hdfs_dir2/
+
+hadoop fs -mv  /data/book.txt /hdfs_dir2/newbook.txt --if already exists it won't work
+
+hadoop fs -m /data/book.txt /data/book1.txt /hdfs_dir2/newbook.txt
+
+mv: '/hdfs_dir2/newbook.txt': No such file or directory
+
+hadoop fs -mv /data/book.txt /data/book1.txt /hdfs_dir2/employee.txt 
+
+mv: '/hdfs_dir2/employee.txt': Is not a directory
+
+
+
+tail similar to cat command
+----
+
+
+hadoop fs -tail
+
+hadoop fs -cat /hdfs_dir2/book.txt | tail -5 --it will show last five lines
+hadoop fs -cat /hdfs_dir2/book.txt | head -5 --it will show first five lines
+
+chgrp -changing group name
+-----
+
+sudo addgroup newgroup
+
+hadoop fs -chgrp newgroup /hdfs_dir2/book.txt 
+
+hadoop fs -chgrp -R newgroup /hdfs_dir2/book.txt 
+
+chown
+-----
+
+sudo adduser user1
+
+hadoop fs -chown user1 supergroup /hdfs_dir2/book.txt
+
+hadoop fs -chown cloudera newgroup /hdfs_dir2/book.txt  
+
+hadoop fs -chown -R user1 newgroup /hdfs_dir2/
+
+chmod file permission change
+-----
+
+r=4, w=2, x=1=7
+
+permission  owner_group  size       last_modified                 replication block_size name
+drwxr-xr-x  hdfs         supergroup Mon Oct 23 09:17:33-0700 2017 0           0B         user
+
+user group others  
+r,w,e  r,e  r,x 
+rwx    r-x  r-x 
+
+octal ->numbers
+symbolic ->letters
+
+hadoop fs -chmod 766 /hdfs_dir2/new_file.txt
+
+
+u,g,o,a	
++
+-
+=
+revoke all permission a - all r - revoke
+
+hadoop fs -chmod a-r /hdfs_dir2/book.txt 
+hadoop fs -chmod a+x /hdfs_dir2/book.txt
+hadoop fs -chmod a=x /hdfs_dir2/book.txt
+ 
+count
+------
+
+find file count in hdfs directory
+
+hadoop fs -count -h /hdfs_dir2 it will return file count
+
+
+usage 
+-----
+
+hadoop fs -usage count   
+

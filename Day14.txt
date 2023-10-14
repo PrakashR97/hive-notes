@@ -1,0 +1,66 @@
+Serde in Hive
++=============
+
+
+
+1.Serialization and Deserialization (SerDe)
+2.Record parsing of a hive table/data using SerDe
+3.Hive DeSerializer converts record (string or binary) into a java object Serializer
+4.Serializer will take java object and convert it into hive suitable file format that can be stored in HDFS.
+
+
+HDFS files->InputfileFormat-><Key,Value> ->DeSerializer ->Row object (Java object)
+Row Object->Serializer-><Key,Value>->OutputFileFormat->HDFS 
+
+Why?
+====
+
+
+1.If we need to process semistructure data (XML,JSON,HTML,Email, etc)we can go for this
+2.If we need to process unstructed data then we can use RegEx SerDe.
+3.We can create our own SerDe for processing any kind of data.
+4.If our data having more special character we use this technique
+
+ 
+ 
+Types
+
+Json SerDe, CSV SerDe, RegEx SerDe, Customized SerDe
+Avro, Parquet, ORC
+
+Library:org.apache.hadoop.hive.serde2
+
+
+create external table test_serde
+(id int, name string)
+row format serde 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+with serdeproperties()
+"separatorChar"=",",
+"quoteChar"="\*",
+"escapeChar"="\"",
+"Serialization.null.format"=''
+)
+stored as textfile;
+
+
+
+serde_data1.txt
+
+1,Prakash's
+2,Vicky's
+3,O'Brien's 
+4,N'eil
+5,Kar\an 
+6,Lal\ith
+
+serde_data2.txt
+
+1,Prakash"s
+2,Vicky"s
+3,O'Brien* 
+4,N'eil
+5,Kar\an 
+6,Lal\ith
+
+
+load data local inpath '/home/cloudera/Desktop/servdata1.txt' into table serde_data1.txt;

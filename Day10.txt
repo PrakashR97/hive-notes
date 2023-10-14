@@ -1,0 +1,10 @@
+Dynamic Partition
+=================
+
+to enable dynamic partition
+set hive.exec.dynamic.partition=true;->dynamic partion 
+set hive.exec.dynamic.partition.mode=strict;->static partition
+
+ drop table patient3;
+  create table patient3(pid int,pname string,gender string,tot_amt int)
+  partitioned by(drug string);

@@ -1,0 +1,115 @@
+Tables
+======
+
+1.Internal Table (Manager Table)
+2.External Table 
+
+Loading Methods
+===============
+
+1,name1,Para,m,500
+2,name2,metacin,m,800
+3,name3,crocin,f,600
+4,name4,para,f,999
+5,name5,metacin,f,500
+
+drop table patient;
+
+create table patient(pid int, pname string, drug string, gender string, tot_amt int);
+
+/user/hive/warehouse/patient
+
+load data local inpath '/home/cloudera/patient.dat' into table patient;
+
+select * from patient; --> data has been loaded but it show as null this is not good pratice we need to use below approcah
+
+create table patient(pid int, pname string, drug string, gender string, tot_amt int)
+row format delimited fields terminated by ',';
+
+create table patient(pid int, pname string, drug string, gender string, tot_amt int)
+lines terminated by'\n';
+comment 'this contains patients info'
+stored as textfile
+location '/data/hive/';
+
+
+load data from hdfs
+===================
+
+
+hadoop fs -mkdir /data1
+hadoop fs -put /home/cloudera/Desktop/patient.dat /data1/
+
+drop table patient;
+
+create table patient(pid int, pname string, drug string, gender string, tot_amt int)
+row format delimited fields terminated by ',';
+
+load data inpath '/data1/patient.dat' into table patient;
+
+load data inpath '/data1/patient.dat' overwrite into table patient;
+
+
+insert like sql
+===============
+
+insert into patient values(1,'fff','para','f',100)
+
+-put or -copyFromLocal another way to load data location wise load data 
+=========================================================================
+
+drop table patient;
+
+create table patient(pid int, pname string, drug string, gender string, tot_amt int)
+row format delimited fields terminated by ',';
+
+/user/hive/warehouse/patient
+
+hadoop fs -put /home/cloudera/Desktop/patient.dat /user/hive/warehouse/patient
+
+hadoop fs -cp /data1/patient.dat /user/hive/warehouse/patient
+
+hadoop fs -mv /data1/patient.dat /user/hive/warehouse/patient
+
+using queries
+=============
+
+drop table patient;
+
+create table patient(pid int, pname string, drug string, gender string, tot_amt int);
+
+/user/hive/warehouse/patient
+
+load data local inpath '/home/cloudera/patient.dat' into table patient;
+
+select * from patient;
+
+
+create table patient1(pid int, pname string, drug string, gender string, tot_amt int);
+
+
+insert into patient1
+select * from patient;
+
+
+insert overwrite into patient1
+select * from patient;
+
+while creation insert data
+==========================
+drop table patient2;
+
+create table patient2 as 
+select * from patient;
+
+drop table patient3;
+
+create table patient3 as 
+select * from patient 
+where 1=2;
+
+create table patient4 like default.patient;
+
+
+External Table
+==============

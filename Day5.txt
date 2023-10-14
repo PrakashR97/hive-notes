@@ -1,0 +1,88 @@
+test
+----
+
+hadoop fs -test -f /hdfs_dir2/book.txt --it is checking whether the file is exists or not 
+
+-e  --> file is there or not
+-z  --> whether is zero size
+-d  --> path is directory it will allow
+-s  --> given path is empty it will allow
+-r  --> given path have read permission it will allow
+-w  --> given path have write permission it will allow
+
+
+text --text file encoding the file and decode as well-->return as plain text
+-----
+
+for example we have a zip file
+
+/hdfs_dir2/newzipfile.zip  --> this one have more than one file
+
+book.txt
+book1.txt
+
+hadoop fs -text /hdfs_dir2/newzipfile.zip
+
+
+lzo this is one of file format
+
+
+appendToFile ->same as like put command -->unix location to hadoop location 
+------------ 
+
+hadoop fs -appendToFile /home/clodera/file1.txt /home/cloudera/file2.txt /hdfs_dir2/hadoopfile1.txt
+
+hadoop fs -appendToFile /home/clodera/file1.txt /home/cloudera/file2.txt /hdfs_dir2/book1.txt
+
+
+
+
+getmerge ->same as like put command -->hdfs directory to unix location 
+------------ 
+
+hadoop fs -getmerge /hdfs_dir2/book.txt /home/cloudera/Desktop/new.txt
+
+
+getfacl -->get file access control list
+-------
+
+hadoop fs -getfacl /hdfs_dir/book.txt 
+
+setrep-->replication factor -w wait for the replication to complete
+------
+
+hadoop fs -setrep -w 10
+
+stat
+----
+
+hadoop fs -stat /hdfs_dir2/book.txt
+
+trucate make file empty
+------
+
+hadoop fs -trucate 50 /hdfs_dir2/book.txt
+
+
+
+concat --> not that much important
+-------
+
+hadoop fs -concat /hdfs_dir2/targetgile.txt /hdfs_dir2/sourcefile.txt /hdfs_dir2/sourcefile2.txt 
+
+
+snapshot --disaster recovery --data loss
+-------- 
+
+hadoop fs -allowsnapshot /hdfs_dir2/
+hadoop fs -disallowsnapshot /hdfs_dir2/
+
+hadoop fs -createSnapshot /hdfs_dir2/ snapshot1
+hadoop fs -deleteSnapshot /hdfs_dir2/ snapshot2
+hadoop fs -renameSnapshot /hdfs_dir2/ snapshot1 snapshot2 
+
+
+
+
+
+

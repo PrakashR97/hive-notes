@@ -1,0 +1,108 @@
+Data Types
+----------
+----------
+
+
+    column types
+	literals
+	null values
+	complex types
+	misc types
+	
+	
+columns types
+-------------
+ tinyint -> -128 to 127
+ smallint -> -32,768 to 32,767
+ int -> -2,147,483,648 to 2,147,483,647
+ bigint -> -9,233,372,036,854,808 to 9,233,372,036,854,807
+ 
+ 
+ create table test1(id tinyint) row format delimited fields terminated by ',';
+ insert into test1 values(1);
+ insert into test1 values(127);
+ insert into test1 values(128);
+ 
+ 1
+ 127
+ null
+ 
+ 
+ string
+ ------
+ 
+ string
+ varchar->1 to 65355 it will release the unused space
+ char   ->1 to 255 it will not release the space
+ 
+ drop table test1;
+ create table test1(id tinyint, name varchar(10)) row format delimited fields terminated by ',';
+ 
+ insert into test1 values(1,'name1');
+ 
+ 
+ timestamp
+ -----------
+ 
+ 
+create table test1(id tinyint, time_info systimestamp);
+
+insert into test1(1,current_timestamp); --it will not work like oracle
+insert into test1
+select 1,current_timestamp;--this will work fine
+
+
+date
+----
+
+select current_date();
+
+create table test_date(date_info date)
+;
+insert into test_date select currect_date(); +-
+yyyy-mm-dd ************format for hive****************
+ 
+ 
+ select date_format(current_date,'Y'); 
+ 
+ select day(current_date); it will return day of the year
+ 
+ select dayofmonth(current_date)
+ 
+ select to_dat`
+ 
+ float -4bypte
+ doubpe --8 type
+ decimal
+ 
+ misc types
+ -----------------------
+ 
+ 1).boolean ->true or false
+ 2).binary ->image,video,text
+ 
+ 
+ 1.boolean
+ -----------
+ create table test_booleans (status boolean) ;
+ row format delimited fields term by ','
+ 
+ 
+ 2.image
+ -----
+ 
+ create table image(picture binary);
+ 
+ create table image(pic binary) row format delimited fiels terminated by ','
+ 
+ load data local inpath '' into table_name;
+ 
+ 
+Complex Types
+-------------
+
+
+Array
+Map
+Struct
+UnionType
